@@ -61,29 +61,12 @@ namespace MinimalApi.Services.Services
             {
                 throw new KeyNotFoundException("Entity not found");
             }
-
             _mapper.Map(dto, entity);
             await GetRepository().UpdateAsync(entity);
             await _unitOfWork.SaveAsync(); // Guardar cambios con UnitOfWork
 
             return _mapper.Map<Vm>(entity);
         }
-
-        public virtual async Task DeleteAsync(int id)
-        {
-            var entity = await GetRepository().GetByIdAsync(id);
-            if (entity == null)
-            {
-                throw new KeyNotFoundException("Entity not found");
-            }
-
-            await GetRepository().RemoveAsync(entity);
-            await _unitOfWork.SaveAsync(); // Guardar cambios con UnitOfWork
-        }
-
-        private Dto ConvertToDto(T entity)
-        {
-            return _mapper.Map<Dto>(entity);
-        }
     }
+    
 }
