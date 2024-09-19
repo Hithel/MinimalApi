@@ -1,4 +1,4 @@
-﻿namespace MinimalApi.ViewModels.User;
+﻿namespace MinimalApi.Models.ViewModels.User;
 
 public class UserVm
 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MinimalApi.Repository.Interfaces;
-using MinimalApi.Repository.UnitOfWork;
+
 using MinimalApi.Services.IServices;
 using System.Linq.Expressions;
 
@@ -12,29 +12,26 @@ namespace MinimalApi.Services.Services
         where Dto : class
         where T : class
     {
-        protected readonly IUnitOfWork _unitOfWork; // Unidad de Trabajo
+        protected readonly IGenericRepository<T> _repository;
         private readonly IMapper _mapper;
         private readonly IValidator<Dto> _validator;
 
-        protected GenericService(IUnitOfWork unitOfWork, IMapper mapper, IValidator<Dto> validator)
+        protected GenericService(IGenericRepository<T> repository, IMapper mapper, IValidator<Dto> validator)
         {
-            _unitOfWork = unitOfWork;
+            _repository = repository;
             _mapper = mapper;
             _validator = validator;
         }
 
-        // Método abstracto que será implementado por cada servicio concreto para obtener el repositorio correcto
-        protected abstract IGenericRepository<T> GetRepository();
-
         public virtual async Task<Vm?> GetByIdAsync(int id)
         {
-            var entity = await GetRepository().GetByIdAsync(id);
+            var entity = await _repository.GetByIdAsync(id);
             return _mapper.Map<Vm>(entity);
         }
 
         public virtual async Task<IEnumerable<Vm>> GetAllAsync()
         {
-            var entities = await GetRepository().GetAllAsync();
+            var entities = await _repository.GetAllAsync();
             return _mapper.Map<IEnumerable<Vm>>(entities);
         }
 
@@ -48,22 +45,20 @@ namespace MinimalApi.Services.Services
             }
 
             var entity = _mapper.Map<T>(dto);
-            await GetRepository().AddAsync(entity);
-            await _unitOfWork.SaveAsync(); // Guardar cambios con UnitOfWork
+            await _repository.AddAsync(entity);
 
             return _mapper.Map<Vm>(entity);
         }
 
         public virtual async Task<Vm> UpdateAsync(Dto dto, int id)
         {
-            var entity = await GetRepository().GetByIdAsync(id);
+            var entity = await _repository.GetByIdAsync(id);
             if (entity == null)
             {
                 throw new KeyNotFoundException("Entity not found");
             }
             _mapper.Map(dto, entity);
-            await GetRepository().UpdateAsync(entity);
-            await _unitOfWork.SaveAsync(); // Guardar cambios con UnitOfWork
+            await _repository.UpdateAsync(entity);
 
             return _mapper.Map<Vm>(entity);
         }

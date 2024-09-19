@@ -1,4 +1,4 @@
-﻿using MinimalApi.Models;
+﻿using MinimalApi.Models.Entities;
 
 namespace MinimalApi.Repository.Interfaces;
 

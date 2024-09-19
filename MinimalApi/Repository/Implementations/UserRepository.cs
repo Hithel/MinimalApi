@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinimalApi.Data;
-using MinimalApi.Models;
+using MinimalApi.Models.Entities;
 using MinimalApi.Repository.Interfaces;
 
 namespace MinimalApi.Repository.Repository;

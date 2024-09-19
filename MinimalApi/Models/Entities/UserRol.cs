@@ -1,4 +1,4 @@
-﻿namespace MinimalApi.Models;
+﻿namespace MinimalApi.Models.Entities;
 
 public class UserRol
 {

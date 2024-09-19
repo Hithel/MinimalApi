@@ -1,6 +1,6 @@
-﻿using MinimalApi.Dtos.User;
-using MinimalApi.Models;
-using MinimalApi.ViewModels.User;
+﻿using MinimalApi.Models;
+using MinimalApi.Models.Dtos.User;
+using MinimalApi.Models.ViewModels.User;
 
 namespace MinimalApi.Services.IServices;
 

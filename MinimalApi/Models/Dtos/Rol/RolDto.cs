@@ -1,6 +1,6 @@
 ﻿using MinimalApi.Models;
 
-namespace MinimalApi.Dtos.Rol
+namespace MinimalApi.Models.Dtos.Rol
 {
     public class RolDto
     {

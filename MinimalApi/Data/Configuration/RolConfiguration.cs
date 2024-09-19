@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MinimalApi.Models;
+using MinimalApi.Models.Entities;
 
 namespace MinimalApi.Data.Configuration;
 

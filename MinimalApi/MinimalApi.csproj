@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Extensions\CorsConfiguration\" />
+    <Folder Include="Extensions\RateLimitingConfiguration\" />
   </ItemGroup>
 
 </Project>

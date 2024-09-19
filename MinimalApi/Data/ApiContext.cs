@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MinimalApi.Models;
+using MinimalApi.Models.Entities;
 using System.Reflection;
 
 namespace MinimalApi.Data;
@@ -21,8 +21,8 @@ public class ApiContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    /* dotnet ef migrations add InitialCreate --project .\Persistence\ --startup-project .\API\ --output-dir ./Data/Migrations 
+    /* dotnet ef migrations add InitialCreate --project .\MinimalApi --startup-project .\MinimalApi\ --output-dir ./Data/Migrations
        */
-    /* dotnet ef database update --project .\Persistence\ --startup-project .\API\
+    /* dotnet ef database update --project .\MinimalApi\ --startup-project .\MinimalApi\
      */
 }

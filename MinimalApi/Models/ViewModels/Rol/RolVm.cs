@@ -1,4 +1,4 @@
-﻿namespace MinimalApi.ViewModels.Rol;
+﻿namespace MinimalApi.Models.ViewModels.Rol;
 
 public class RolVm
 {

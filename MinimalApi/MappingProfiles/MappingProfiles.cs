@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MinimalApi.Dtos.Rol;
-using MinimalApi.Dtos.User;
-using MinimalApi.Models;
-using MinimalApi.ViewModels.User;
+using MinimalApi.Models.Dtos.Rol;
+using MinimalApi.Models.Dtos.User;
+using MinimalApi.Models.Entities;
+using MinimalApi.Models.ViewModels.User;
 
 namespace MinimalApi.MappingProfiles;
 
