@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MinimalApi.Models.Dtos.User;
+namespace MinimalApi.Models.Dtos.Authentication;
 
 public class RegisterDto
 {

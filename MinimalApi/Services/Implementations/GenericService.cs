@@ -5,7 +5,7 @@ using MinimalApi.Repository.Interfaces;
 using MinimalApi.Services.IServices;
 using System.Linq.Expressions;
 
-namespace MinimalApi.Services.Services
+namespace MinimalApi.Services.Implementations
 {
     public abstract class GenericService<Vm, Dto, T> : IGenericService<Vm, Dto>
         where Vm : class

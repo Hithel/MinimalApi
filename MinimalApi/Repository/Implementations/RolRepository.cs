@@ -3,7 +3,7 @@ using MinimalApi.Data;
 using MinimalApi.Models.Entities;
 using MinimalApi.Repository.Interfaces;
 
-namespace MinimalApi.Repository.Repository;
+namespace MinimalApi.Repository.Implementations;
 
 public class RolRepository : GenericRepository<Rol>, IRol
 {
@@ -24,4 +24,16 @@ public class RolRepository : GenericRepository<Rol>, IRol
         return await _context.Rols
         .FirstOrDefaultAsync(p => p.Id == id);
     }
+
+    public async Task<Rol?> GetRolByName(string name)
+    {
+        var rol = await _context.Rols
+                                .Where(r => r.Nombre.ToLower() == name.ToLower())
+                                .FirstOrDefaultAsync();
+
+        return rol != null ? rol : null;
+
+    }
+
+
 }

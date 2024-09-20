@@ -7,5 +7,5 @@ namespace MinimalApi.Services.IServices;
 
 public interface IRolService : IGenericService<RolVm, RolDto>
 {
-
+    Task<RolVm> GetRolNameByNameAsync(string name);
 }

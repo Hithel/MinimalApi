@@ -3,7 +3,7 @@ using MinimalApi.Data;
 using MinimalApi.Models.Entities;
 using MinimalApi.Repository.Interfaces;
 
-namespace MinimalApi.Repository.Repository;
+namespace MinimalApi.Repository.Implementations;
 
 public class UserRepository : GenericRepository<User>, IUser
 {

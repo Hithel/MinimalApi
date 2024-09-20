@@ -4,7 +4,7 @@ using MinimalApi.Repository.Interfaces;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MinimalApi.Repository.Repository;
+namespace MinimalApi.Repository.Implementations;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
