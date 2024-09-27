@@ -7,7 +7,6 @@ using MinimalApi.Models.Entities;
 using MinimalApi.Models.ViewModels.Authentication;
 using MinimalApi.Repository.Interfaces;
 using MinimalApi.Services.IServices;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 
 namespace MinimalApi.Helpers.Services;
@@ -18,16 +17,14 @@ public class UserAuthenticationService : IUserAuthenticationService
     private readonly IUserService _userService; // Servicio para usuarios
     private readonly IRolService _rolService; // Servicio para roles
     private readonly IUser _userRepositoty;
-    private readonly JwtSettings _jwtSettings;
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
 
-    public UserAuthenticationService(IPasswordHasher<User> passwordHasher, IUserService userService, IRolService rolService, JwtSettings jwtSettings, IMapper mapper, ITokenService tokenService, IUser userRepositoty)
+    public UserAuthenticationService(IPasswordHasher<User> passwordHasher, IUserService userService, IRolService rolService, IMapper mapper, ITokenService tokenService, IUser userRepositoty)
     {
         _passwordHasher = passwordHasher;
         _userService = userService;
         _rolService = rolService;
-        _jwtSettings = jwtSettings;
         _mapper = mapper;
         _tokenService = tokenService;
         _userRepositoty = userRepositoty;

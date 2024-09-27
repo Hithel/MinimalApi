@@ -12,14 +12,12 @@ public class RolService : GenericService<RolVm, RolDto, Rol>, IRolService
 {
     private readonly IRol _rolRepository;
     private readonly IMapper _mapper;
-    private readonly IValidator<RolDto> _validator;
 
-    public RolService(IRol rolRepository, IMapper mapper, IValidator<RolDto> validator)
-        : base(rolRepository, mapper, validator)
+    public RolService(IRol rolRepository, IMapper mapper)
+        : base(rolRepository, mapper)
     {
         _rolRepository = rolRepository;
         _mapper = mapper;
-        _validator = validator;
     }
 
     public async Task<RolVm> GetRolNameByNameAsync(string name)
@@ -30,12 +28,13 @@ public class RolService : GenericService<RolVm, RolDto, Rol>, IRolService
         }
 
         var rol = await _rolRepository.GetRolByName(name);
-        
-        if (rol == null) 
+
+        if (rol == null)
         {
             throw new KeyNotFoundException($"Rol no encontrado para el nombre: {name}");
         }
         return _mapper.Map<RolVm>(rol);
 
     }
+
 }

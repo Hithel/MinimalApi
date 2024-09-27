@@ -12,14 +12,12 @@ public class UserService : GenericService<UserVm, UserDto, User>, IUserService
 {
     private readonly IUser _userRepository;
     private readonly IMapper _mapper;
-    private readonly IValidator<UserDto> _validator;
 
-    public UserService(IUser userRepository, IMapper mapper, IValidator<UserDto> validator)
-        : base(userRepository, mapper, validator)
+    public UserService(IUser userRepository, IMapper mapper)
+        : base(userRepository, mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
-        _validator = validator;
     }
 
     public async Task<UserVm> GetByUsernameAsync(string username)

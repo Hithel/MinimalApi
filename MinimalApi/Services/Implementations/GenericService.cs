@@ -14,13 +14,11 @@ namespace MinimalApi.Services.Implementations
     {
         protected readonly IGenericRepository<T> _repository;
         private readonly IMapper _mapper;
-        private readonly IValidator<Dto> _validator;
 
-        protected GenericService(IGenericRepository<T> repository, IMapper mapper, IValidator<Dto> validator)
+        protected GenericService(IGenericRepository<T> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _validator = validator;
         }
 
         public virtual async Task<Vm?> GetByIdAsync(int id)
@@ -38,10 +36,9 @@ namespace MinimalApi.Services.Implementations
 
         public virtual async Task<Vm> AddAsync(Dto dto)
         {
-            var validationResult = await _validator.ValidateAsync(dto);
-            if (!validationResult.IsValid)
+            if (dto == null)
             {
-                throw new ValidationException(validationResult.Errors);
+                throw new ArgumentNullException(nameof(dto), "El objeto DTO no puede ser nulo.");
             }
 
             var entity = _mapper.Map<T>(dto);
