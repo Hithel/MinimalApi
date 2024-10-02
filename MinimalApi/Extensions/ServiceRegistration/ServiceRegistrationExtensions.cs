@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.AspNetCore.Identity;
+using MinimalApi.Helpers.Authentication.Security;
 using MinimalApi.Helpers.Services;
 using MinimalApi.Helpers.TwoStepAuth;
 using MinimalApi.Models.Entities;
@@ -27,6 +28,9 @@ public static class ServiceRegistrationExtensions
 
         //Servicio de hasheo de contrasena
         service.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        //Servicio de generacion de token
+        service.AddScoped<ITokenService, TokenService>();
 
     }
 }

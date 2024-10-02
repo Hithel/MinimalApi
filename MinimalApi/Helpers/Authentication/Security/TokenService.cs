@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MinimalApi.Models.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,13 +7,13 @@ using System.Text;
 
 namespace MinimalApi.Helpers.Authentication.Security;
 
-public class TokenService
+public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
 
-    public TokenService(JwtSettings jwtSettings)
+    public TokenService(IOptions<JwtSettings> jwtSettings)
     {
-        _jwtSettings = jwtSettings;
+        _jwtSettings = jwtSettings.Value;
     }
 
     public string GenerateJwtToken(User user)

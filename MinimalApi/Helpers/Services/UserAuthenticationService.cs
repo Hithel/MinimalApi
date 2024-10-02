@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using MinimalApi.Helpers.Authentication.Authorization;
 using MinimalApi.Helpers.Authentication.Security;
 using MinimalApi.Models.Dtos.Authentication;
 using MinimalApi.Models.Dtos.User;
@@ -43,14 +44,14 @@ public class UserAuthenticationService : IUserAuthenticationService
 
         user.Password = _passwordHasher.HashPassword(user, registerDto.Password);
 
-        var existingUser = _userService.GetByUsernameAsync(registerDto.Username);
+        var existingUser = await _userService.GetByUsernameAsync(registerDto.Username);
 
 
         if (existingUser == null)
         {
-            var rolDefaultVm = _rolService.GetRolNameByNameAsync(registerDto.Username);
+            var rolDefaultVm = await _rolService.GetRolNameByNameAsync(Authorization.rol_default.ToString());
             var rolDefault = _mapper.Map<Rol>(rolDefaultVm);
-
+                                              
             try
             {
                 user.Rols.Add(rolDefault);
