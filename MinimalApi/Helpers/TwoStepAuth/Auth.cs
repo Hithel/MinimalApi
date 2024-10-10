@@ -38,11 +38,15 @@ public class Auth: IAuth
         return Convert.FromBase64String(UriQR);
     }
 
+
+
     public bool VerifyCode(string secret, string code)
     {
         var tsa = new TwoFactorAuth(_conf["JWTSettings:Issuer"], 6, 30, Algorithm.SHA256);
         return tsa.VerifyCode(secret, code, 1);
     }
+
+
 
     public async Task SendEmail(User User, byte[] QR)
     {

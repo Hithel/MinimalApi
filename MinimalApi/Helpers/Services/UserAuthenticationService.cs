@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using MinimalApi.Helpers.Authentication.Authorization;
 using MinimalApi.Helpers.Authentication.Security;
+using MinimalApi.Helpers.TwoStepAuth;
 using MinimalApi.Models.Dtos.Authentication;
 using MinimalApi.Models.Dtos.User;
 using MinimalApi.Models.Entities;
@@ -9,6 +10,7 @@ using MinimalApi.Models.ViewModels.Authentication;
 using MinimalApi.Repository.Interfaces;
 using MinimalApi.Services.IServices;
 using System.Security.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MinimalApi.Helpers.Services;
 
@@ -20,8 +22,9 @@ public class UserAuthenticationService : IUserAuthenticationService
     private readonly IUser _userRepositoty;
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
+    private readonly IAuth _auth;
 
-    public UserAuthenticationService(IPasswordHasher<User> passwordHasher, IUserService userService, IRolService rolService, IMapper mapper, ITokenService tokenService, IUser userRepositoty)
+    public UserAuthenticationService(IPasswordHasher<User> passwordHasher, IUserService userService, IRolService rolService, IMapper mapper, ITokenService tokenService, IUser userRepositoty, IAuth auth)
     {
         _passwordHasher = passwordHasher;
         _userService = userService;
@@ -30,6 +33,7 @@ public class UserAuthenticationService : IUserAuthenticationService
         _tokenService = tokenService;
         _userRepositoty = userRepositoty;
         _userRepositoty = userRepositoty;
+        _auth = auth;
     }
 
 
@@ -71,6 +75,51 @@ public class UserAuthenticationService : IUserAuthenticationService
             return $"User {registerDto.Username} already registered.";
         }
     }
+
+
+
+    public async Task<DataUserDto> LoginAsync(LoginDto Dto)
+    {
+        DataUserDto dataUserDto = new DataUserDto();
+
+        var userVm = await _userService.GetByUsernameAsync(Dto.Username);
+        var userEntity = _mapper.Map<User>(userVm);
+
+        if (userEntity == null)
+        {
+            dataUserDto.IsAuthenticated = false;
+            dataUserDto.Message = $"User does not exist with username: {Dto.Username}";
+            return dataUserDto;
+        }
+
+        var result = _passwordHasher.VerifyHashedPassword(userEntity, userEntity.Password!, Dto.Password);
+
+        if (result == PasswordVerificationResult.Success)
+        {
+
+            byte[] QR = _auth.CreateQR(ref userEntity);
+            var userDto = _mapper.Map<UserDto>(userEntity);
+            await _userService.UpdateAsync(userDto, userEntity.Id);
+
+            // Realizar la autenticación y obtener el token
+            DataUserDto tokenData = await GetTokenAsync(Dto);
+
+            // Envía el correo electrónico con el QR
+            await _auth.SendEmail(userEntity, QR);
+
+            return tokenData;
+        }
+        else
+        {
+            // Devuelve una respuesta indicando que la autenticación falló
+            dataUserDto.IsAuthenticated = false;
+            dataUserDto.Message = "La contraseña es incorrecta.";
+            return dataUserDto;
+        }
+    }
+
+
+
 
     public async Task<DataUserDto> GetTokenAsync(LoginDto model)
     {
@@ -134,7 +183,6 @@ public class UserAuthenticationService : IUserAuthenticationService
         dataUserDto.IsAuthenticated = false;
         dataUserDto.Message = $"Credenciales incorrectas para el usuario {userEntity.Username}.";
         return dataUserDto;
-
     }
 
 
@@ -152,6 +200,10 @@ public class UserAuthenticationService : IUserAuthenticationService
             };
         }
     }
+
+
+
+
 
     public async Task<string> AddRoleAsync(AddRoleDto model)
     {
@@ -247,5 +299,25 @@ public class UserAuthenticationService : IUserAuthenticationService
         return dataUserDto;
     }
 
+    public async Task<bool> VerifyAsync(AuthDto dto)
+    {
+        try
+        {
+            User? user = await _userRepositoty.GetByUsernameAsync(dto.Username!);
 
+            if (user!.TwoStepSecret == null)
+            {
+                throw new ArgumentNullException(nameof(user.TwoStepSecret), "Two-step secret is null");
+            }
+
+            var IsVerify = _auth.VerifyCode(user.TwoStepSecret, dto.Code!);
+
+            return IsVerify;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error verifying code for user {dto.Username}", ex);
+        }
+
+    }
 }

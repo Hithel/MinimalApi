@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using MinimalApi.Models.Dtos.Authentication;
 using MinimalApi.Models.Dtos.User;
 using MinimalApi.Models.Entities;
 using MinimalApi.Models.ViewModels.User;
@@ -31,8 +32,4 @@ public class UserService : GenericService<UserVm, UserDto, User>, IUserService
         var user = await _userRepository.GetByRefreshTokenAsync(Username);
         return _mapper.Map<UserVm>(user);  
     }
-
-
-
-
 }

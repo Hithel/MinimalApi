@@ -1,4 +1,5 @@
 ﻿using MinimalApi.Models;
+using MinimalApi.Models.Dtos.Authentication;
 using MinimalApi.Models.Dtos.User;
 using MinimalApi.Models.ViewModels.User;
 

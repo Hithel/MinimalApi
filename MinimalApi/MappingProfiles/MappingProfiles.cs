@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MinimalApi.Models.Dtos.Authentication;
 using MinimalApi.Models.Dtos.Rol;
 using MinimalApi.Models.Dtos.User;
 using MinimalApi.Models.Entities;
