@@ -78,7 +78,7 @@ public class UserController : ApiBaseController
         {
             var Isverified = await _userAuthenticationService.VerifyAsync(dto);
 
-            if (Isverified)
+            if (Isverified == true)
             {
                 return Ok("authenticated, checked");
             }
